@@ -16,18 +16,12 @@ const DEFAULT_SETTINGS = {
     timeout: 30_000,
 };
 
-/** Generator settings (e.g. for configurator to override temperature). */
 export type GeneratorSettings = {
     temperature?: number;
     maxTokens?: number;
     timeout?: number;
 };
 
-/**
- * GANN generator: takes a prompt and produces a string output via OpenAI.
- * @param prompt - User prompt for the generator.
- * @param overrides - Optional settings override (e.g. temperature from configurator).
- */
 export async function run(
     prompt: string,
     overrides?: GeneratorSettings

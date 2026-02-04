@@ -8,19 +8,16 @@ const ConfiguratorOutputSchema = z.object({
 
 export type ConfiguratorOutput = z.infer<typeof ConfiguratorOutputSchema>;
 
-/** Generator config snapshot (what was used for a run). Temperature stays consistent; configurator only adjusts the prompt. */
 export type GeneratorConfigSnapshot = {
     temperature: number;
     maxTokens: number;
     timeout?: number;
 };
 
-/** One entry in configurator history: a past run and its outcome. */
 export type ConfiguratorHistoryEntry = {
     generatorPrompt: string;
     generatorConfig: GeneratorConfigSnapshot;
     score: number;
-    /** Prompt we suggested for the *next* run after this (if any). */
     suggestedNextPrompt?: string;
 };
 
@@ -43,34 +40,21 @@ const DEFAULT_SETTINGS = {
     timeout: 30_000,
 };
 
-/** In-memory history of generator runs and scores for the configurator. */
 let history: ConfiguratorHistoryEntry[] = [];
 
-/**
- * Returns the current configurator history (read-only snapshot).
- */
 export function getHistory(): readonly ConfiguratorHistoryEntry[] {
     return history;
 }
 
-/**
- * Clears the in-memory history (e.g. for tests or a new session).
- */
 export function clearHistory(): void {
     history = [];
 }
 
-/**
- * Configurator: receives generator prompt + discriminator score, optional CV and job context,
- * uses in-memory history, and suggests the next generator prompt to maximise score. Temperature stays consistent.
- */
 export async function suggestNextPrompt(params: {
     generatorPrompt: string;
     generatorConfig: GeneratorConfigSnapshot;
     score: number;
-    /** Optional: source CV content for context. */
     cvContent?: string;
-    /** Optional: job requirements for context. */
     jobRequirements?: string;
 }): Promise<AIInvokeResult<string>> {
     const { generatorPrompt, generatorConfig, score, cvContent, jobRequirements } = params;

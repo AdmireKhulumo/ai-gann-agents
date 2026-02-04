@@ -13,7 +13,6 @@ const NUM_ROUNDS = 5;
 const INITIAL_GENERATOR_PROMPT =
   'Tell me a joke';
 
-/** Fixed generator settings; temperature stays consistent. */
 const GENERATOR_CONFIG: GeneratorConfigSnapshot = {
   temperature: 0.7,
   maxTokens: 1024,

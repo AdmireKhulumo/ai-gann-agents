@@ -33,26 +33,13 @@ const DEFAULT_SETTINGS = {
     timeout: 30_000,
 };
 
-/** Context the discriminator needs to evaluate choice of experiences and summary quality. */
 export type DiscriminatorContext = {
-    /** The instruction given to the generator (e.g. pick 3 experiences that best meet job requirements). */
     generatorPrompt: string;
-    /** The source text (CV) that was summarised. */
     cvContent: string;
-    /** The job requirements the experiences should match. */
     jobRequirements: string;
-    /**
-     * Optional: experiences you deem most correct for this job.
-     * When provided, the discriminator uses these as the gold standard and scores alignment with them.
-     */
     expectedExperiences?: string;
 };
 
-/**
- * GANN discriminator: takes the generator's summary output and scores how well it summarised
- * and picked relevant experiences according to the prompt (0–10). Uses the source CV and
- * generator prompt as context.
- */
 export async function run(
     generatorOutput: string,
     context: DiscriminatorContext
