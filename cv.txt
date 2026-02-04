@@ -10,20 +10,20 @@ Ndebele (Full Professional)
 Swedish (Beginner)
 French (Beginner)
 
-Tech Lead (Fullstack), Nava, Q4 2025
+Tech Lead (Fullstack), CompanyX, Q4 2025
 
-Nava is building an AI-powered user research platform to scale interviews with a human-touch. They provide a SaaS platform to users across the world that enables collection of qualitative insights for businesses who need to interview their customers.
+CompanyX is building an AI-powered user research platform to scale interviews with a human-touch. They provide a SaaS platform to users across the world that enables collection of qualitative insights for businesses who need to interview their customers.
 
-The team at Nava had a vibe-coded demo and needed a stable and scalable software to secure initial B2B customers and build an engineering team around it. 
+The team at CompanyX had a vibe-coded demo and needed a stable and scalable software to secure initial B2B customers and build an engineering team around it. 
 
 Admire designed and implemented a new system architecture to enable scaling and unification of the entire system on a leading cloud provider, selected through a thorough evaluation of their technical requirements, and hence, bringing together a scattered ecosystem of applications and architecting for a strong cloud security posture in the process. Furthermore, he integrated with leading AI providers to create advanced chat and analysis functionalities required in the application, building both the frontend and backend application To ensure smooth and robust developer experience, Admire automated deployments and database migrations (schema updates) for all three environments: development, staging, and production. Admire also set up the domain and certificates to allow the application to be accessible by the general public with load-balancing configured. Lastly, he onboarded a new developer and CTO into the team to help them transition and continue working on the product effectively.
 
 TECHNOLOGIES: Typescript, React, Fastify, Node.js, Tanstack React Query, Zod, Tanstack React Router, Shadcn, Tailwind, Open Telemetry, Grafana, PostgreSQL, LangChain, GitHub Actions CI/CD, Docker, Microsoft Azure (Azure App Service, Container Registry, App Identities, SMTP with Email Communication Service), Event-driven design.
 
-Software Architect, Technical Due Diligence, Dentio, Q4 2025
-Dentio is a startup building an AI assistant for dentists, focused on transcribing patient-practitioner conversations, summarizing them and generating patient journal entries. 
-Dentio had gotten great initial traction and was experiencing scaling issues such as long response times, and a codebase with frequent failure and difficult debugging..
-Admire performed a thorough evaluation of the Dentio tech, focusing on cloud infrastructure, security and performance. By leading implementation of proper monitoring and logging Admire helped reduce debug complexity and found several easy to implement fixes boosting security and performance significantly. He recommended a new microservice set up that allowed for easier onboarding of new hires, added capability to horizontally scale bottleneck services and implemented proper CI/CD shortening development lifecycles.
+Software Architect, Technical Due Diligence, CompanyZ, Q4 2025
+CompanyZ is a startup building an AI assistant for dentists, focused on transcribing patient-practitioner conversations, summarizing them and generating patient journal entries. 
+CompanyZ had gotten great initial traction and was experiencing scaling issues such as long response times, and a codebase with frequent failure and difficult debugging..
+Admire performed a thorough evaluation of the CompanyZ tech, focusing on cloud infrastructure, security and performance. By leading implementation of proper monitoring and logging Admire helped reduce debug complexity and found several easy to implement fixes boosting security and performance significantly. He recommended a new microservice set up that allowed for easier onboarding of new hires, added capability to horizontally scale bottleneck services and implemented proper CI/CD shortening development lifecycles.
 TECHNOLOGIES: Python, Fast API, GCP(Pub/Sub, Task Queue, Cloud Build, Cloud Run, Cloud Trace), React, React Query, PostgreSQL, Open Telemetry, Supabase, Github Actions, Open Telemetry, Event-driven design. 
 AI & Infrastructure Engineer, Småspararguiden, Q3 2025
 Småspararguiden is a top publisher investigating the financial industry while giving general financial advice and guidance to the public. They host a popular podcast series and share blog posts on their website.
@@ -37,23 +37,26 @@ Admire built the backend and frontend of the MVP in close collaboration with the
 TECHNOLOGIES: .NET / C#, React, Remix, Express.JS, Node.JS, Redis, Grafana, Heroku, PostgreSQL, GitHub Action, Supabase, Open Telemetry
 
 
-Senior Software Engineer, Fleet LeaseCo, Volvo Cars, Q1 2025 - Q2 2025
+Software Engineer, Fleet LeaseCo, Volvo Cars, Q1 2025 - Q2 2025
 The Fleet LeaseCo team builds order placement and management software to support leasing company B2B sales for Volvo Cars in the UK and Sweden.
 There was a long complicated process for dealers to place leasing orders for B2B sales, including several systems and stakeholders and taking over a week for a single order. To remedy this there was a need for automation in the order placement process to reduce time needed, complexity, and to prevent duplicate manual work. 
 Admire created a microservice-based backend and user interfaces to digitise sales channels for leasing companies and helped the company create external dealer-facing systems for automated order placement at Volvo Cars. This included a new fullstack application built from scratch to support new sales channels, allowing Volvo Cars to participate in the Motability scheme of the UK government helping disabled customers get access to cars. Furthermore, to enable a seamless delivery tracking process for new vehicle orders, Admire took the initiative to design and implement an event-based microservice for automatically linking new and existing orders to Volvo user accounts, removing previous need for double entry of the same information for the sales agents.
 TECHNOLOGIES: C#, .NET, MsTest, Node, Typescript, Jest, React, PostgreSQL, Marten, Hashikorp Vault, Github Actions, Docker, Kubernetes, Microservices.
 
-Interim Tech Lead, Fleet Foundation, Volvo Cars, Q3-Q4 2024
+
+Software Engineer, Fleet Foundation, Volvo Cars, Q3-Q4 2024
 The Fleet Foundation team in the Commercial Digital department is responsible for foundational technical capabilities like account onboarding and management, discount systems and credit risk assessment storage across B2B Fleet digital sales channels in the UK, Sweden, USA, Norway, and Finland.
 The tech lead of Admire’s previous team left for parental leave and they needed someone to champion work on their key master data system required for fleet accounts. At the same time a bug in the release of the checkout system had led to issues stopping payment collection downstream in SAP.
 Admire returned to his previous team and solved the high-stake incident preventing the company from potential losses due to incorrect bank details in downstream SAP systems. He led key initiatives for new features and integrations in the master data fleet account system leading to sustained output despite a downsized team. He also led the implementation of Backstage to set up new processes of working with documentation and improved the team’s engagement and health by introducing recurring activities such as Feedback Week, Friday’s Virtual Fika, and retrospectives. 
 TECHNOLOGIES: C#, .NET, MsTest, Node, Typescript, Vitest React, Cosmos Mongo DB, Azure KeyVault, AKS, Terraform, Azure DevOps, Github Actions, Docker, Kubernetes.
 
-Senior Software Engineer, Fleet LeaseCo, Volvo Cars, Q1 2024 - Q2 2024
+
+Software Engineer, Fleet LeaseCo, Volvo Cars, Q1 2024 - Q2 2024
 The Fleet LeaseCo team builds order placement and management software to support leasing company B2B sales for Volvo Cars in the UK and Sweden.
 They had a manual 2-3 week process for adding new business partners into Volvo’s systems which required engineers to run a special script reading from an Excel sheet. This was error-prone and slow, leading to ample frustration from the market teams and customers. As Fleet LeaseCo grew to account for 22% of the UK market, this became untenable.
 As a part of his previous work in the foundation team, Admire was required to fix incidents resulting from the broken onboarding process. Knowing this, he took ownership of the process and led technical analysis and coordinated three teams to unlock capabilities of onboarding these accounts through Salesforce to give sales agents more control and visibility. This cut overall time by over 50% and reduced incidents associated with erroneous accounts. Additionally, he expanded this implementation to cover account updates and other maintenance tasks to reduce dependence of sales agents on developers, thus leading to increased efficiency for both developers and sales agents, and a much better work environment letting developers focus on developing.
 TECHNOLOGIES: C#, .NET, MsTest, Docker, Kubernetes, Microservices, Salesforce, Azure DevOps.
+
 
 Tech Lead, Botswana Ministry of Agriculture, Q1 2023 - Q1 2025
 The Botswana Ministry of Agriculture, a part of the government of Botswana, introduced a new nation-wide program, Temoletlotlo, to promote food sustainability in the country by giving farmers tools to record and report farming activities, thereby getting access to grants, loans and new technologies. 
@@ -61,18 +64,18 @@ They needed a scalable software system for government officials to manage the pr
 Admire managed and mentored a team of 4 junior developers. He set up the code base and ways of working to ensure best practices in each of the backend microservices and managed the development, staging, and production environments including CI/CD, observability and monitoring. He coached the junior developers from newly graduated to capable of independently leading and implementing new features and building microservice architectures of their own, effectively offboarding himself from the day to day development by empowering his team. All in all Admire’s efforts led to a productive team with great cohesion and delivery of high quality code. 
 TECHNOLOGIES: Typescript, Node, Nest.js, Jest,  React, SQL Server / MSSQL, Github Actions, Microservices, Azure Kubernetes Service (AKS), Docker, Azure Container Registry (ACR), Istio, Kibana, Elastic APM, Sentry, Azure DevOps.
 
+
 System Architect, Botswana Ministry of Agriculture, Q3 2022 - Q4 2022
 The Botswana Ministry of Agriculture, a part of the government of Botswana, introduced a new nation-wide program, Temoletlotlo, to promote food sustainability in the country by giving farmers tools to record and report farming activities, thereby getting access to grants, loans and new technologies. 
 The ministry needed design and implementation of a new scalable base architecture to handle servicing a market of around 250,000 users with high performance. It also required audit logs and adequate safety for loan management and integration with highly regulated banking software.
 Admire architected an event-based microservice system and set up the cluster including the service mesh, gateway configuration, SSL certificates, overall security and cloud administration. He also coordinated and designed software contracts for over six integrations with external companies such as the national identity system (NIS), the national tax authority BURS, and leading telecom company BTC, ensuring seamless data integration and user experience. The product reached a high market penetration of over 50% of the total accessible market in one year. Due to the lean architecture, readiness probes, and automated horizontal/vertical scaling, the product was able to handle over 150,000 users to date with consistently good reliability and availability.
 TECHNOLOGIES: Github Actions, Microservices, Firebase Auth, Supertokens, Azure Kubernetes Service (AKS), Docker, Azure Container Registry (ACR), Azure Service Bus, Entra ID, Istio, Kibana, Elastic APM, Sentry,
 
-Interim Tech Lead, Fleet Foundation, Volvo Cars, Q4 2023
+Software Engineer, Fleet Foundation, Volvo Cars, Q4 2023
 The Fleet Foundation team in the Commercial Digital department is responsible for foundational technical capabilities like account onboarding and management, discount systems and credit risk assessment across B2B Fleet digital sales channels in the UK, Sweden, USA, Norway, and Finland.
 China passed a data localisation law which required that all China user data be stored in a database within China. Volvo Cars had some of this data outside of China and hence had to comply within a short period of time. Additionally, due to how integrated services such as ID management was in other products and also at other companies, no downtime could be accepted.  
 Admire led the migration of 2.1 million users from an EU database to a China database, for both Volvo Cars and Polestar. He created new .NET client libraries and made expansive changes across several systems which relied on the data by introducing proxies to new APIs from the Identity Management team. The migration was completed on time without any data loss or disruption to users, sparing the company from potential legal compliance issues.
 TECHNOLOGIES: C#, .NET, MsTest, Cosmos Mongo DB, PostgreSQL, Azure KeyVault.
-
 
 
 Software Engineer, Fleet Foundation, Volvo Cars, Q4 2022 - Q3 2023
@@ -82,16 +85,12 @@ Admire enabled Volvo to allow self-onboarding for different B2B customer types i
 TECHNOLOGIES: C#, .NET, MsTest, Node, Typescript, Vitest React, Cosmos Mongo DB, Azure KeyVault, AKS, Terraform, Azure DevOps, Github Actions, Docker, Kubernetes.
 
 
-
-
-
-
-
 Machine Learning Engineer, Energy Services Lab, R&D, Volvo Cars, Q3 2022
 The Energy Services Lab (ESL) develops solutions for managing electric cars’ battery energy and optimising its charging.
 The ESL was exploring a home energy management system relying on using the car’s battery when it returns. To amble the Vehicle to Grid functionality they needed to reliably predict the amount of battery (state of charge) that each person’s car would have when they returned home on a given day.
 Admire conducted independent quantitative research for the ESL by comparing machine learning models using Volvo's charging datasets. This included both regression and time-series approaches such as the Facebook Prophet model. His analysis directly informed product development decisions for their home energy management solution.
 TECHNOLOGIES: Python, Machine Learning, Pandas, NumPy, Scikit Learn.
+
 
 Software Engineer, Contamination & Core CFD, R&D, Volvo Cars, Q3 2022
 The Contamination and Core CFD team within Sustainability (R&D) conducts testing to assess how environmental conditions, such as snow and rain, affect safety-critical vehicle components.
@@ -106,20 +105,19 @@ The team had a subjective and manual way to identify water coverage on important
 Admire took initiative for and created automated image analysis tools using shell scripts and Java-Fiji integration to replace subjective water coverage assessments with objective, quantifiable metrics—enabling reliable cross-vehicle comparisons for the first time. 
 TECHNOLOGIES: Shell Scripting, Python, Fiji/ImageJ, Gitlab, Ms. Excel reporting.
 
+
 Software Engineer, Precision Vehicle & Asset Tracking, Q3 2021 - Q4 2021 
 Precision Vehicle & Asset Tracking is a company providing a fleet management and tracking solution, allowing customers to track the location of their vehicles and visualise other data about the system.
 The team received support requests through several platforms and had difficulty assigning responsibility since they were discussed together over Teams. Many requests would end up missed or resolved much slower, leading to a frustrating experience for the customer.
 Admire developed an entire full-stack application to create support requests, assign them to technicians, monitor their progress, and finally visualise metrics about the tickets through an interactive dashboard. This application consisted of a performant backend API and a frontend web application deployed on the cloud. His work was integrated into the company’s internal workflows which boosted transparency and response rate, leading to a more satisfied customer experience.
 TECHNOLOGIES: React, Ant Design, LESS, Typescript, Node, Express, Jest, Google Cloud Run Functions,  Google Cloud Firestore, Google Firebase Authentication.
 
+
 Software Engineer, BIUST, Q4 2020 - Q2 2021
 BIUST, Botswana International University of Science and Technology is a higher education institution focused on STEM university courses. They are a leader in STEM education across the country and ranked highly in Africa.
 During Covid-19, the institution needed a way to track movement into and out of shared buildings to facilitate adequate contact tracing if someone was found to have the virus. This was usually untracked, and they wanted to use student and staff IDs for it.
 Admire developed a serverless backend API to interact with a collection database and fetch user information, and the building they went into. He added role-based authentication on the platform and built a frontend interface to allow the health staff to access the movement data for contact tracing and view dashboards on overall movement and density of common buildings. The application was operational in the institution for the duration of general spread of the corona virus.
 TECHNOLOGIES: React, Material UI, Typescript, Node, Express, Jest,  Google Cloud Firestore, Google Firebase Authentication.
-
-
-
 
 Software Engineer, Government of Botswana, Q2 2020 - Q3 2020
 The Ministry of Health within the Government of Botswana is responsible for all medical matters and overall population health in the country.

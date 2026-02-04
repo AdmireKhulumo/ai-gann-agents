@@ -3,12 +3,12 @@ import type { AIInvokeResult } from '../lib/langchain-client';
 import { z } from 'zod';
 
 const ConfiguratorOutputSchema = z.object({
-    suggestedTemperature: z.number().min(0).max(2),
+    suggestedPrompt: z.string(),
 });
 
 export type ConfiguratorOutput = z.infer<typeof ConfiguratorOutputSchema>;
 
-/** Generator config snapshot (what was used for a run). */
+/** Generator config snapshot (what was used for a run). Temperature stays consistent; configurator only adjusts the prompt. */
 export type GeneratorConfigSnapshot = {
     temperature: number;
     maxTokens: number;
@@ -20,22 +20,22 @@ export type ConfiguratorHistoryEntry = {
     generatorPrompt: string;
     generatorConfig: GeneratorConfigSnapshot;
     score: number;
-    /** Temperature we suggested for the *next* run after this (if any). */
-    suggestedNextTemperature?: number;
+    /** Prompt we suggested for the *next* run after this (if any). */
+    suggestedNextPrompt?: string;
 };
 
 const DEFAULT_MODEL_NAME = 'gpt-4o-mini';
 const DEFAULT_MODEL_PROVIDER = 'openai';
-const DEFAULT_SYSTEM_PROMPT = `You are a configurator for a GAN-like setup where the generator summarises a CV according to a prompt and the discriminator scores how well the summary and choice of experiences match the prompt (0–10; 10 = perfect, 0 = very bad).
+const DEFAULT_SYSTEM_PROMPT = `You are a configurator for a GAN-like setup where the generator picks 3 experiences from a CV that best meet job requirements and summarizes them; the discriminator scores how well the choice and summaries match the job (0–10; 10 = perfect, 0 = very bad).
 
-- The generator produces a summary from the source CV and a given instruction, using an LLM with a given temperature.
-- The discriminator scores that summary for quality and relevance (not funniness).
-- Your job: given the generator's instruction, the config (especially temperature) that was used, and the score, suggest the temperature the generator should use NEXT so that the next score is likely to be higher.
+- The generator receives the job requirements, the CV, and an instruction (prompt). Temperature is fixed; only the instruction changes.
+- Your job: given the generator's instruction that was used, the score from the discriminator, the job requirements, and CV context, suggest a NEW instruction (prompt) for the generator to use on the NEXT run so that the next score is likely to be higher.
 
 Consider:
-- Lower temperature (e.g. 0.3–0.6) tends to be more focused and consistent; higher (e.g. 0.7–1.2) more creative/random.
-- Use history of past runs to spot patterns (e.g. "when we used 0.9, score dropped; when we used 0.5, score rose").
-- Suggest one number in the range 0 to 2. Be decisive.`;
+- Rephrasing the instruction to stress job requirements (e.g. platform engineering, DevOps, observability, CI/CD, scale).
+- Asking for different formatting or emphasis (e.g. "highlight technologies from the job description", "focus on developer experience and reliability").
+- Use history of past runs: if a certain phrasing led to a higher score, steer toward that; if the discriminator penalized missing criteria, make the next prompt mention those criteria explicitly.
+- Output only the new instruction text, ready to be used as the generator prompt. Keep it concise (one or two sentences). Do not include the job requirements or CV in your output, only have the instruction.`;
 
 const DEFAULT_SETTINGS = {
     temperature: 0.2,
@@ -61,17 +61,19 @@ export function clearHistory(): void {
 }
 
 /**
- * Configurator: receives generator config + prompt + discriminator score,
- * optional CV context, uses in-memory history, and suggests the next temperature to maximise score.
+ * Configurator: receives generator prompt + discriminator score, optional CV and job context,
+ * uses in-memory history, and suggests the next generator prompt to maximise score. Temperature stays consistent.
  */
-export async function suggestNextTemperature(params: {
+export async function suggestNextPrompt(params: {
     generatorPrompt: string;
     generatorConfig: GeneratorConfigSnapshot;
     score: number;
-    /** Optional: source CV content for context (same as used by generator and discriminator). */
+    /** Optional: source CV content for context. */
     cvContent?: string;
-}): Promise<AIInvokeResult<number>> {
-    const { generatorPrompt, generatorConfig, score, cvContent } = params;
+    /** Optional: job requirements for context. */
+    jobRequirements?: string;
+}): Promise<AIInvokeResult<string>> {
+    const { generatorPrompt, generatorConfig, score, cvContent, jobRequirements } = params;
 
     const entry: ConfiguratorHistoryEntry = {
         generatorPrompt,
@@ -85,9 +87,9 @@ export async function suggestNextTemperature(params: {
             ? 'No previous runs yet.'
             : history
                 .map((h, i) => {
-                    const part = `Run ${i + 1}: prompt="${h.generatorPrompt.slice(0, 120)}${h.generatorPrompt.length > 120 ? '...' : ''}", temperature=${h.generatorConfig.temperature}, score=${h.score}`;
-                    if (h.suggestedNextTemperature != null) {
-                        return part + ` (suggested next temp: ${h.suggestedNextTemperature})`;
+                    const part = `Run ${i + 1}: prompt="${h.generatorPrompt.slice(0, 120)}${h.generatorPrompt.length > 120 ? '...' : ''}", score=${h.score}`;
+                    if (h.suggestedNextPrompt != null) {
+                        return part + ` (suggested next prompt: "${h.suggestedNextPrompt.slice(0, 60)}...")`;
                     }
                     return part;
                 })
@@ -95,9 +97,13 @@ export async function suggestNextTemperature(params: {
 
     const cvBlock =
         cvContent != null
-            ? `\n\nSource CV context (same text the generator summarises):\n${cvContent.slice(0, 2000)}${cvContent.length > 2000 ? '...' : ''}`
+            ? `\n\nSource CV context (excerpt):\n${cvContent.slice(0, 1500)}${cvContent.length > 1500 ? '...' : ''}`
             : '';
-    const userPrompt = `History of runs (most recent last):\n${historyBlock}\n\nCurrent run we just got the score for: prompt="${generatorPrompt}", temperature=${generatorConfig.temperature}, score=${score}.${cvBlock}\n\nWhat temperature should the generator use for the NEXT run to maximise the score? Reply with a single number between 0 and 2.`;
+    const jobBlock =
+        jobRequirements != null
+            ? `\n\nJob requirements (excerpt):\n${jobRequirements.slice(0, 1500)}${jobRequirements.length > 1500 ? '...' : ''}`
+            : '';
+    const userPrompt = `History of runs (most recent last):\n${historyBlock}\n\nCurrent run we just got the score for: prompt="${generatorPrompt}", score=${score}.${jobBlock}${cvBlock}\n\nSuggest the next generator prompt (instruction only, no CV or job text) to maximise the score. Reply with only the new instruction text.`;
 
     const result = await langchainClient.invoke(
         DEFAULT_MODEL_NAME,
@@ -109,11 +115,11 @@ export async function suggestNextTemperature(params: {
     );
 
     if (result.success) {
-        const suggested = result.response.suggestedTemperature;
-        if (history.length > 0) {
-            history[history.length - 1].suggestedNextTemperature = suggested;
+        const suggested = result.response.suggestedPrompt.trim();
+        if (history.length > 0 && suggested) {
+            history[history.length - 1].suggestedNextPrompt = suggested;
         }
-        return { success: true, response: suggested };
+        return { success: true, response: suggested || generatorPrompt };
     }
     return { success: false, error: result.error };
 }

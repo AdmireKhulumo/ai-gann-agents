@@ -3,31 +3,47 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { run as runGenerator, type GeneratorSettings } from './ai-agents/generator';
 import { run as runDiscriminator } from './ai-agents/discriminator';
-import { suggestNextTemperature, type GeneratorConfigSnapshot } from './ai-agents/configurator';
+import { suggestNextPrompt, type GeneratorConfigSnapshot } from './ai-agents/configurator';
 
 const CV_PATH = path.join(process.cwd(), 'cv.txt');
-const GENERATOR_PROMPT = 'Write a 3 sentence summary of this consultants CV, highlighting top experiences which make them a good .NET and AI developer.';
+const JOB_REQUIREMENTS_PATH = path.join(process.cwd(), 'job-requirements.txt');
+const EXPECTED_EXPERIENCES_PATH = path.join(process.cwd(), 'expected-experiences.txt');
 const NUM_ROUNDS = 5;
+
+const INITIAL_GENERATOR_PROMPT =
+  'Tell me a joke';
+
+/** Fixed generator settings; temperature stays consistent. */
+const GENERATOR_CONFIG: GeneratorConfigSnapshot = {
+  temperature: 0.7,
+  maxTokens: 1024,
+  timeout: 30_000,
+};
 
 async function main(): Promise<void> {
   console.log('AI LinkedIn GANN\n');
 
   const cvContent = fs.readFileSync(CV_PATH, 'utf-8');
-  const fullGeneratorPrompt = `${cvContent}\n\n---\n\n${GENERATOR_PROMPT}`;
+  const jobRequirements = fs.readFileSync(JOB_REQUIREMENTS_PATH, 'utf-8');
+  const expectedExperiences = fs.readFileSync(EXPECTED_EXPERIENCES_PATH, 'utf-8');
 
-  let currentConfig: GeneratorConfigSnapshot = {
-    temperature: 2.0,
-    maxTokens: 1024,
-    timeout: 30_000,
+  let currentPrompt = INITIAL_GENERATOR_PROMPT;
+  const promptWithContext = (instruction: string) =>
+    `Job requirements:\n${jobRequirements}\n\n---\nCV:\n${cvContent}\n\n---\n${instruction}`;
+
+  const discriminatorContext = {
+    generatorPrompt: currentPrompt,
+    cvContent,
+    jobRequirements,
+    expectedExperiences,
   };
-
-  const discriminatorContext = { generatorPrompt: GENERATOR_PROMPT, cvContent };
 
   for (let round = 1; round <= NUM_ROUNDS; round++) {
     console.log(`--- Round ${round} ---`);
-    console.log('Generator config (temperature):', currentConfig.temperature);
+    console.log('Generator prompt:', currentPrompt);
 
-    const genResult = await runGenerator(fullGeneratorPrompt, currentConfig as GeneratorSettings);
+    const fullGeneratorPrompt = promptWithContext(currentPrompt);
+    const genResult = await runGenerator(fullGeneratorPrompt, GENERATOR_CONFIG as GeneratorSettings);
     if (!genResult.success) {
       console.error('Generator error:', genResult.error);
       return;
@@ -36,7 +52,7 @@ async function main(): Promise<void> {
     const text = genResult.response;
     console.log('\n  [Generator]\n  ', text);
 
-    const discResult = await runDiscriminator(text, discriminatorContext);
+    const discResult = await runDiscriminator(text, { ...discriminatorContext, generatorPrompt: currentPrompt });
     if (!discResult.success) {
       console.error('Discriminator error:', discResult.error);
       return;
@@ -50,11 +66,12 @@ async function main(): Promise<void> {
       break;
     }
 
-    const configResult = await suggestNextTemperature({
-      generatorPrompt: GENERATOR_PROMPT,
-      generatorConfig: currentConfig,
+    const configResult = await suggestNextPrompt({
+      generatorPrompt: currentPrompt,
+      generatorConfig: GENERATOR_CONFIG,
       score,
       cvContent,
+      jobRequirements,
     });
 
     if (!configResult.success) {
@@ -62,9 +79,10 @@ async function main(): Promise<void> {
       return;
     }
 
-    const suggestedTemp = configResult.response;
-    console.log('\n  [Configurator]\n  ', 'Suggested temperature:', suggestedTemp);
-    currentConfig = { ...currentConfig, temperature: suggestedTemp };
+    const suggestedPrompt = configResult.response;
+    console.log('\n  [Configurator]\n  ', 'Suggested prompt:', suggestedPrompt.slice(0, 80) + (suggestedPrompt.length > 80 ? '...' : ''));
+    currentPrompt = suggestedPrompt;
+    discriminatorContext.generatorPrompt = currentPrompt;
     console.log('');
   }
 
